@@ -1,6 +1,6 @@
 import os
 import sys
-import numpy as np 
+import numpy as np
 import pandas as pd
 import logging
 import gc
@@ -20,9 +20,9 @@ class train_data_loader(object):
 		"""
 		: label_artifact_path (str): path to a npy file containing a 1d array
 		: seq_inp_target (list[str]): list of embedding variables
-		: seq_inp_path (list[str]): list of paths to a pkl file 
+		: seq_inp_path (list[str]): list of paths to a pkl file
 		: w2v_registry (dict): key is the embedded variable and value is the path to a gensim.models.Word2Vec artifact
-		: max_seq_len (int): max length for sequence input, default 100 
+		: max_seq_len (int): max length for sequence input, default 100
 		: batch_size (int): batch size for yielding data
 		: shuffle (bool): whether to shuffle data before yielding
 
@@ -32,7 +32,7 @@ class train_data_loader(object):
 		seq_inp_target = ['product', 'creative']
 		seq_inp_path = ['/Users/ywu/Desktop/product_toy.pkl', '/Users/ywu/Desktop/creative_toy.pkl']
 		w2v_registry = {
-			"product": "/Users/ywu/Desktop/Tencent-Ads-Algo-Comp-2020/Script/embed_artifact/product_embed_s128_j1j5w652", 
+			"product": "/Users/ywu/Desktop/Tencent-Ads-Algo-Comp-2020/Script/embed_artifact/product_embed_s128_j1j5w652",
 			"creative": "/Users/ywu/Desktop/Tencent-Ads-Algo-Comp-2020/Script/embed_artifact/creative_embed_s256_5y76t_gp"
 		}
 
@@ -65,24 +65,24 @@ class train_data_loader(object):
 		self.label = None
 		self._load_label()
 
-		self.inp_seq = []
-		self._load_seq_inp()
-		self.inp_last_idx = np.array([i.shape[0] for i in self.inp_seq[0]]) - 1
+		self.inp_seq = []  # 所有序列id的embedding
+		self._load_seq_inp()  # 加载所有序列 的 embedding
+		self.inp_last_idx = np.array([i.shape[0] for i in self.inp_seq[0]]) - 1   # 所有序列的最后一位索引
 
 		assert self.label.shape[0]==self.inp_last_idx.shape[0]
 
-		self.len = self.label.shape[0]
+		self.len = self.label.shape[0]   # 数据长度
 		div, mod = divmod(self.len, self.batch_size)
-		self.n_batch = div + min(mod, 1)
+		self.n_batch = div + min(mod, 1)   # 最大batch数
 
-		self.yield_idx = np.arange(self.len)
-		if self.shuffle: np.random.shuffle(self.yield_idx)
+		self.yield_idx = np.arange(self.len)  # 数据索引
+		if self.shuffle: np.random.shuffle(self.yield_idx)  # shuffle
 
-	def _load_label(self):
+	def _load_label(self):  # 加载数据标签
 		with open(self.label_artifact_path, 'rb') as f:
 			self.label = np.load(f)
 
-	def _load_seq_inp(self):
+	def _load_seq_inp(self):  # 加载word2Vec向量
 		for target, path in zip(self.seq_inp_target, self.seq_inp_path):
 			w2v_model =  Word2Vec.load(self.w2v_registry[target])
 			if self.logger: self.logger.info('{} w2v model is loaded'.format(target.capitalize()))
