@@ -133,12 +133,14 @@ class Transformer_Encoder_Classifier(nn.Module):
 			padding_mask[index,:last_idx+1] = 0
 		return torch.from_numpy(padding_mask).bool().to(self.device)
 
-	def forward(self, inp_embed, inp_last_idx):
-		assert inp_embed.shape[0] == inp_last_idx.shape[0]
-		batch_size = inp_embed.shape[0]
-		seq_len = inp_embed.shape[1]
+	def forward(self, input_emb, inp_last_idx):
+		# inp_emb:6个输入序列 [6, batch_size, max_seq_len, embed_size]，
+		# inp_last_idx: batch中每个用户的序列长度
+		assert input_emb.shape[0] == inp_last_idx.shape[0]
+		batch_size = input_emb.shape[0]
+		seq_len = input_emb.shape[1]
 		inp_padding_mask = self.get_padding_mask(batch_size, seq_len, inp_last_idx)
-		out = self.encoder_layer(inp_embed, inp_padding_mask=inp_padding_mask)               # (batch_size, n_step, embed_size)
+		out = self.encoder_layer(input_emb, inp_padding_mask=inp_padding_mask)               # (batch_size, n_step, embed_size)
 		pooled_buf = []
 		for index, last_idx in enumerate(inp_last_idx):
 			pooled_buf.append(torch.max(out[index,:last_idx+1,:], dim=0)[0])

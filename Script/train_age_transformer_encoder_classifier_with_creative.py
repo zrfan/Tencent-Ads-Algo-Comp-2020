@@ -115,12 +115,12 @@ def train(model, train_inp_tuple, validation_inp_tuple, checkpoint_dir, checkpoi
 			train_iterator = iter(train_loader)
 			while True:
 				try:
-					y, x_seq, x_last_idx = next(train_iterator)
+					y, x_seq, x_last_idx = next(train_iterator)  # 6输入，6个序列  [6, batch_size, max_seq_len, embed_size]
 					y = torch.from_numpy(y).long().to(device)
 					x = []
 					for s in x_seq:
 						x.append(s.to(device))
-					x.append(x_last_idx)
+					x.append(x_last_idx)  # x中加入序列长度-1
 					optimizer.zero_grad()
 					yp = F.softmax(model(*x), dim=1)
 					loss = loss_fn(yp, y)

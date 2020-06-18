@@ -65,7 +65,7 @@ class train_data_loader(object):
 		self.label = None
 		self._load_label()
 
-		self.inp_seq = []  # 所有序列id的embedding
+		self.inp_seq = []  # 所有序列id的embedding  [6, 90W, max_seq_len, embed_size]
 		self._load_seq_inp()  # 加载所有序列 的 embedding
 		self.inp_last_idx = np.array([i.shape[0] for i in self.inp_seq[0]]) - 1   # 所有序列的最后一位索引
 
@@ -104,14 +104,14 @@ class train_data_loader(object):
 	def __next__(self):
 		if self.cur_batch >= self.n_batch:
 			raise StopIteration
-		else:
+		else:  # 每次读取一个batch
 			if self.logger: self.logger.info('Yielding batch {}/{}'.format(self.cur_batch+1, self.n_batch))
 			cur_index = self.yield_idx[self.cur_batch*self.batch_size:(self.cur_batch+1)*self.batch_size]
 			y = self.label[cur_index]
 			x_seq = [torch.nn.utils.rnn.pad_sequence([seq[i] for i in cur_index], batch_first=True, padding_value=0) for seq in self.inp_seq]
 			x_seq_last_idx = self.inp_last_idx[cur_index]
 			self.cur_batch += 1
-			return y, x_seq, x_seq_last_idx
+			return y, x_seq, x_seq_last_idx   # x_seq表示6种序列, [6, batch_size, max_seq_len, embed_size]
 
 class test_data_loader(object):
 	"""
