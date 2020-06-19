@@ -137,21 +137,21 @@ class Transformer_Encoder_Classifier(nn.Module):
 		# inp_emb:6个输入序列 [6, batch_size, max_seq_len, embed_size]，
 		# inp_last_idx: batch中每个用户的序列长度
 		assert input_emb.shape[0] == inp_last_idx.shape[0]
-		print("transformer input_emb [0] size=", input_emb[0].size())
+		# print("transformer input_emb [0] size=", input_emb[0].size())
 		batch_size = input_emb.shape[0]
 		seq_max_len = input_emb.shape[1]
 		inp_padding_mask = self.get_padding_mask(batch_size, seq_max_len, inp_last_idx)
-		print("input padding mask=", inp_padding_mask.size())
+		# print("input padding mask=", inp_padding_mask.size())
 		out = self.encoder_layer(input_emb, inp_padding_mask=inp_padding_mask)               # (batch_size, n_step, embed_size)
-		print("encoder layer out=", out.size())
+		# print("encoder layer out=", out.size())
 		#  最大池化 MaxPooling
 		pooled_buf = []
 		for index, last_idx in enumerate(inp_last_idx):
 			pooled_buf.append(torch.max(out[index,:last_idx+1,:], dim=0)[0])
 		out = torch.stack(pooled_buf)                                                        # (batch_size, embed_size)
-		print("max pooled out=", out.size())
+		# print("max pooled out=", out.size())
 		out = self.classification_layer(out)                                                 # (batch_size, out_size)
 
 		# out = torch.zeros((batch_size, self.classification_layer.out_size))
-		print("classification out=", out)
+		# print("classification out=", out)
 		return out
