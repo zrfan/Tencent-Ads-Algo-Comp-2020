@@ -90,7 +90,7 @@ def train(model, train_inp_tuple, validation_inp_tuple, checkpoint_dir, checkpoi
 		model_artifact_path = os.path.join(checkpoint_dir, '{}_{}.pth'.format(checkpoint_prefix, epoch_start))
 		model.load_state_dict(torch.load(model_artifact_path))
 		if logger: logger.info('Start retraining from epoch {}'.format(epoch_start))
-	print("model_artifact_path=", model_artifact_path)
+		print("model_artifact_path=", model_artifact_path)
 	# Set up loss function and optimizer
 	model.to(device)
 	loss_fn = nn.CrossEntropyLoss()
