@@ -134,7 +134,7 @@ def train(model, train_inp_tuple, validation_inp_tuple, checkpoint_dir, checkpoi
 					train_running_loss += loss.item()
 					train_n_batch += 1
 
-					if train_n_batch%100==0 and logger:
+					if train_n_batch%4000==0 and logger:
 						logger.info('Epoch {}/{} - Batch {}/{} Done - Train Loss: {:.6f}'.format(epoch, epoches+epoch_start, train_n_batch, n_batch_estimate, train_running_loss/train_n_batch))
 					del x, y, yp, x_seq, x_last_idx
 					_ = gc.collect()
