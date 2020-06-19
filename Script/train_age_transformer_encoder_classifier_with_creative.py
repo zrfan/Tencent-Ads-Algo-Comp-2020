@@ -240,7 +240,9 @@ if __name__=='__main__':
 		a = torch.cuda.memory_allocated(DEVICE)/1024**3
 		logger.info('CUDA Memory: Total {:.2f} GB, Cached {:.2f} GB, Allocated {:.2f} GB'.format(t,c,a))
 
-	model = Transformer_Encoder_Classifier(128, 10, 4, 8, 1024, DEVICE).to(DEVICE)
+	#embed_size, out_size, n_enc_layer, n_head, intermediate_size, device, transformer_dropout=0.1, mlp_dropout=0.4,
+	model = Transformer_Encoder_Classifier(embed_size=128, out_size=10, n_enc_layer=4, n_head=8, intermediate_size=1024,
+										device=DEVICE).to(DEVICE)
 
 	logger.info('Model Parameter #: {}'.format(get_torch_module_num_of_parameter(model)))
 	
