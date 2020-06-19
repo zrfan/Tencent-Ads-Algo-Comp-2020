@@ -160,6 +160,7 @@ class test_data_loader(object):
 		if not gc.isenabled(): gc.enable()
 
 		self.inp_seq = []
+		print("load seq_input")
 		self._load_seq_inp()
 		self.inp_last_idx = np.array([i.shape[0] for i in self.inp_seq[0]]) - 1
 
