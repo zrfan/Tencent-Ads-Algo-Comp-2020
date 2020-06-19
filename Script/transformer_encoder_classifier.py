@@ -142,13 +142,13 @@ class Transformer_Encoder_Classifier(nn.Module):
 		seq_max_len = input_emb.shape[1]
 		inp_padding_mask = self.get_padding_mask(batch_size, seq_max_len, inp_last_idx)
 		print("input padding mask=", inp_padding_mask.size())
-		# out = self.encoder_layer(input_emb, inp_padding_mask=inp_padding_mask)               # (batch_size, n_step, embed_size)
-		# print("encoder layer out=", out.size())
+		out = self.encoder_layer(input_emb, inp_padding_mask=inp_padding_mask)               # (batch_size, n_step, embed_size)
+		print("encoder layer out=", out.size())
 		#  最大池化 MaxPooling
-		# pooled_buf = []
-		# for index, last_idx in enumerate(inp_last_idx):
-		# 	pooled_buf.append(torch.max(out[index,:last_idx+1,:], dim=0)[0])
-		# out = torch.stack(pooled_buf)                                                        # (batch_size, embed_size)
+		pooled_buf = []
+		for index, last_idx in enumerate(inp_last_idx):
+			pooled_buf.append(torch.max(out[index,:last_idx+1,:], dim=0)[0])
+		out = torch.stack(pooled_buf)                                                        # (batch_size, embed_size)
 		# print("max pooled out=", out.size())
 		# out = self.classification_layer(out)                                                 # (batch_size, out_size)
 
