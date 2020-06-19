@@ -219,10 +219,11 @@ if __name__=='__main__':
 		checkpoint_dir = os.path.join(model_path, 'Transformer_Encoder_Classifier_Creative_Age')
 		checkpoint_prefix = 'Transformer_Encoder_Classifier_Creative_Age'
 	else:
-		train_inp_tuple = [(os.path.join(input_path, 'train_age_tra.npy'), ['product'],  # ,,'product', 'advertiser',  'ad' 'creative'
-			[os.path.join(input_path, 'train_creative_id_seq_tra.pkl')])]
-		validation_inp_tuple = [(os.path.join(input_path, 'train_age_val.npy'), ['product'],  # ,  'ad','product', 'advertiser' 'creative'
-			[os.path.join(input_path, 'train_creative_id_seq_val.pkl')])]
+		embs = ['product']  # ,,'product', 'advertiser',  'ad' 'creative'
+		train_inp_tuple = [(os.path.join(input_path, 'train_age_tra.npy'), embs,
+			[os.path.join(input_path, 'train_' + emb +'_id_seq_tra.pkl') for emb in embs])]
+		validation_inp_tuple = [(os.path.join(input_path, 'train_age_val.npy'), embs,
+			[os.path.join(input_path, 'train_' + emb +'_id_seq_val.pkl') for emb in embs])]
 		checkpoint_dir = os.path.join(model_path, 'Transformer_Encoder_Classifier_Creative_Age')
 		checkpoint_prefix = 'Transformer_Encoder_Classifier_Creative_Age'
 	print("get train_inp_tuple=", train_inp_tuple, "\n\nvalidation_inp_tupe=", validation_inp_tuple, "\n\ncheckpoint_dir=", checkpoint_dir,
