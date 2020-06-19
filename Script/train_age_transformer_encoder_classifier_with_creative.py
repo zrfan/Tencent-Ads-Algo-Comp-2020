@@ -90,7 +90,7 @@ def train(model, train_inp_tuple, validation_inp_tuple, checkpoint_dir, checkpoi
 		model_artifact_path = os.path.join(checkpoint_dir, '{}_{}.pth'.format(checkpoint_prefix, epoch_start))
 		model.load_state_dict(torch.load(model_artifact_path))
 		if logger: logger.info('Start retraining from epoch {}'.format(epoch_start))
-
+	print("model_artifact_path=", model_artifact_path)
 	# Set up loss function and optimizer
 	model.to(device)
 	loss_fn = nn.CrossEntropyLoss()
@@ -208,6 +208,7 @@ if __name__=='__main__':
 	batch_size = int(sys.argv[3])
 	max_seq_len = int(sys.argv[4])
 	lr = float(sys.argv[5])
+	print("get params=", sys.argv)
 	if len(sys.argv)>6:
 		train_inp_tuple = [(os.path.join(input_split_path, 'train_age_{}.npy'.format(i)), ['creative'], 
 			[os.path.join(input_split_path, 'train_creative_id_seq_{}.pkl'.format(i))]) for i in range(1,10)]
@@ -222,6 +223,8 @@ if __name__=='__main__':
 			[os.path.join(input_path, 'train_creative_id_seq_val.pkl')])]
 		checkpoint_dir = os.path.join(model_path, 'Transformer_Encoder_Classifier_Creative_Age')
 		checkpoint_prefix = 'Transformer_Encoder_Classifier_Creative_Age'
+	print("get train_inp_tuple=", train_inp_tuple, "validation_inp_tupe=", validation_inp_tuple, "checkpoint_dir=", checkpoint_dir,
+		  "checkpoint_prefix=", checkpoint_prefix)
 
 	logger = initiate_logger('Transformer_Encoder_Classifier_Creative_Age.log')
 	logger.info('Epoch Start: {}， Epoch to Train: {}, Batch Size: {}, Max Sequence Length: {}, Learning Rate: {}'.format(epoch_start, epoches, batch_size, max_seq_len, lr))
