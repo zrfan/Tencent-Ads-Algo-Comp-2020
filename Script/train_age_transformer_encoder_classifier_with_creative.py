@@ -225,8 +225,8 @@ if __name__=='__main__':
 			[os.path.join(input_path, 'train_creative_id_seq_val.pkl')])]
 		checkpoint_dir = os.path.join(model_path, 'Transformer_Encoder_Classifier_Creative_Age')
 		checkpoint_prefix = 'Transformer_Encoder_Classifier_Creative_Age'
-	print("get train_inp_tuple=", train_inp_tuple, "validation_inp_tupe=", validation_inp_tuple, "checkpoint_dir=", checkpoint_dir,
-		  "checkpoint_prefix=", checkpoint_prefix)
+	print("get train_inp_tuple=", train_inp_tuple, "\n\nvalidation_inp_tupe=", validation_inp_tuple, "\n\ncheckpoint_dir=", checkpoint_dir,
+		  "\n\ncheckpoint_prefix=", checkpoint_prefix)
 
 	logger = initiate_logger('Transformer_Encoder_Classifier_Creative_Age.log')
 	logger.info('Epoch Start: {}， Epoch to Train: {}, Batch Size: {}, Max Sequence Length: {}, Learning Rate: {}'.format(epoch_start, epoches, batch_size, max_seq_len, lr))
