@@ -149,9 +149,9 @@ class Transformer_Encoder_Classifier(nn.Module):
 		for index, last_idx in enumerate(inp_last_idx):
 			pooled_buf.append(torch.max(out[index,:last_idx+1,:], dim=0)[0])
 		out = torch.stack(pooled_buf)                                                        # (batch_size, embed_size)
-		# print("max pooled out=", out.size())
-		# out = self.classification_layer(out)                                                 # (batch_size, out_size)
+		print("max pooled out=", out.size())
+		out = self.classification_layer(out)                                                 # (batch_size, out_size)
 
-		out = torch.zeros((batch_size, self.classification_layer.out_size))
+		# out = torch.zeros((batch_size, self.classification_layer.out_size))
 		print("classification out=", out)
 		return out
