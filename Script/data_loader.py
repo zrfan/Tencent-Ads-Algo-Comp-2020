@@ -48,6 +48,8 @@ class train_data_loader(object):
 		_ = gc.collect()
 		```
 		"""
+		print("#### train data loader: w2v_registry=", w2v_registry)
+		print("#### train data loader: seq_inp_target=", seq_inp_target)
 		assert label_artifact_path.split('.')[-1]=='npy'
 		assert isinstance(seq_inp_target, list), isinstance(seq_inp_path, list) and isinstance(w2v_registry, dict)
 		assert all([k in w2v_registry for k in seq_inp_target]) and all([v.split('.')[-1]=='pkl' for v in seq_inp_path])

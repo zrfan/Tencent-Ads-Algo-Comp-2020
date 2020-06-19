@@ -90,7 +90,7 @@ def train(model, train_inp_tuple, validation_inp_tuple, checkpoint_dir, checkpoi
 		model_artifact_path = os.path.join(checkpoint_dir, '{}_{}.pth'.format(checkpoint_prefix, epoch_start))
 		model.load_state_dict(torch.load(model_artifact_path))
 		if logger: logger.info('Start retraining from epoch {}'.format(epoch_start))
-		print("model_artifact_path=", model_artifact_path)
+		print("#####model_artifact_path=", model_artifact_path)
 	# Set up loss function and optimizer
 	model.to(device)
 	loss_fn = nn.CrossEntropyLoss()
@@ -111,8 +111,8 @@ def train(model, train_inp_tuple, validation_inp_tuple, checkpoint_dir, checkpoi
 		train_running_loss, train_n_batch = 0, 0
 
 		for index, (label_artifact_path, seq_inp_target, seq_inp_path) in enumerate(train_inp_tuple, start=1):
-			print("epoch=", epoch, "index=", index, "label_artifac_path=", label_artifact_path,
-				  "seq_inp_target=", seq_inp_target, "seq_inp_path=", seq_inp_path)
+			print("#####epoch=", epoch, "index=", index, "label_artifac_path=", label_artifact_path,
+				  "\nseq_inp_target=", seq_inp_target, "seq_inp_path=", seq_inp_path)
 			train_loader = train_data_loader(label_artifact_path, seq_inp_target, seq_inp_path, w2v_registry, batch_size=batch_size, max_seq_len=max_seq_len)
 			train_iterator = iter(train_loader)
 			while True:
