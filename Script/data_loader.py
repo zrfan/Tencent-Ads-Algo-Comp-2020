@@ -68,7 +68,9 @@ class train_data_loader(object):
 		self._load_label()
 
 		self.inp_seq = []  # 所有序列id的embedding  [6, 90W, max_seq_len, embed_size]
+		print("train data loader load seq input")
 		self._load_seq_inp()  # 加载所有序列 的 embedding
+
 		self.inp_last_idx = np.array([i.shape[0] for i in self.inp_seq[0]]) - 1   # 所有序列的最后一位索引
 
 		assert self.label.shape[0]==self.inp_last_idx.shape[0]
@@ -86,6 +88,7 @@ class train_data_loader(object):
 
 	def _load_seq_inp(self):  # 加载word2Vec向量
 		for target, path in zip(self.seq_inp_target, self.seq_inp_path):
+			print("load seq_inp start load target=", target, "path=", path)
 			w2v_model =  Word2Vec.load(self.w2v_registry[target])
 			if self.logger: self.logger.info('{} w2v model is loaded'.format(target.capitalize()))
 			with open(path, 'rb') as f:
